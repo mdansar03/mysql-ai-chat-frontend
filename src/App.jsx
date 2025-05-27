@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ThemeProvider } from './contexts/ThemeContext'
+import { API_ENDPOINTS } from './config/api'
 import Sidebar from './components/Sidebar'
 import ChatArea from './components/ChatArea'
 import './App.css'
@@ -43,7 +44,7 @@ function App() {
 
   const checkConnectionStatus = async () => {
     try {
-      const response = await fetch('/api/connection_status')
+      const response = await fetch(API_ENDPOINTS.CONNECTION_STATUS)
       const data = await response.json()
       
       if (data.connected) {
@@ -67,7 +68,7 @@ function App() {
 
   const loadTables = async () => {
     try {
-      const response = await fetch('/api/get_tables')
+      const response = await fetch(API_ENDPOINTS.GET_TABLES)
       const data = await response.json()
       
       if (response.ok && data.tables) {

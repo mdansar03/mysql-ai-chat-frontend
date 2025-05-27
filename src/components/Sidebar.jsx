@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { API_ENDPOINTS } from '../config/api'
 import ThemeToggle from './ThemeToggle'
 
 const Sidebar = ({
@@ -48,7 +49,7 @@ const Sidebar = ({
 
   const loadPerformanceSettings = async () => {
     try {
-      const response = await axios.get('/api/performance_config')
+      const response = await axios.get(API_ENDPOINTS.PERFORMANCE_CONFIG)
       if (response.data) {
         setPerformanceSettings({
           useFasterModel: response.data.use_faster_model || false,
@@ -67,7 +68,7 @@ const Sidebar = ({
     updateStatus('Connecting to database...', 'info')
 
     try {
-      const response = await axios.post('/api/connect', connectionForm)
+      const response = await axios.post(API_ENDPOINTS.CONNECT, connectionForm)
       
       if (response.data.success) {
         setIsConnected(true)
@@ -88,7 +89,7 @@ const Sidebar = ({
 
   const handleDisconnect = async () => {
     try {
-      await axios.post('/api/disconnect')
+      await axios.post(API_ENDPOINTS.DISCONNECT)
       setIsConnected(false)
       setConnectionInfo(null)
       setTables([])
@@ -105,7 +106,7 @@ const Sidebar = ({
     updateStatus('Loading tables...', 'info')
 
     try {
-      const response = await axios.get('/api/get_tables')
+      const response = await axios.get(API_ENDPOINTS.GET_TABLES)
       if (response.data && response.data.tables) {
         setTables(response.data.tables)
         updateStatus('Tables loaded successfully', 'success')
@@ -137,7 +138,7 @@ const Sidebar = ({
     updateStatus('Processing table...', 'info')
 
     try {
-      const response = await axios.post('/api/process_table', {
+      const response = await axios.post(API_ENDPOINTS.PROCESS_TABLE, {
         table_name: tableName
       })
 
@@ -188,7 +189,7 @@ const Sidebar = ({
         max_retries: 1
       }
 
-      const response = await axios.post('/api/performance_config', settings)
+      const response = await axios.post(API_ENDPOINTS.PERFORMANCE_CONFIG, settings)
 
       if (response.data.success) {
         updateStatus('Performance settings saved', 'success')

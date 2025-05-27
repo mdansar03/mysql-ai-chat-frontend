@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import axios from 'axios'
+import { API_ENDPOINTS } from '../config/api'
 import Message from './Message'
 import MessageInput from './MessageInput'
 import ChatToggle from './ChatToggle'
@@ -61,7 +62,7 @@ const ChatArea = ({ messages, addMessage, isConnected, currentTable, updateStatu
     updateStatus('Processing your query...', 'info')
 
     try {
-      const response = await axios.post('/api/query', {
+      const response = await axios.post(API_ENDPOINTS.QUERY, {
         question: messageText,
         table_name: currentTable
       })
