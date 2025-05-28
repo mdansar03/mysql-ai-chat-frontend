@@ -3,18 +3,18 @@ import axios from 'axios'
 import { API_ENDPOINTS } from '../config/api'
 import Message from './Message'
 import MessageInput from './MessageInput'
-import ChatToggle from './ChatToggle'
+// import ChatToggle from './ChatToggle'
 
 const ChatArea = ({ messages, addMessage, isConnected, currentTable, updateStatus }) => {
   const [isLoading, setIsLoading] = useState(false)
   const messagesEndRef = useRef(null)
   const resultsCache = useRef({})
 
-  const chatModeOptions = [
-    { label: 'Query', icon: 'fa-search', value: 'query' },
-    { label: 'Analyze', icon: 'fa-chart-line', value: 'analyze' },
-    { label: 'Explore', icon: 'fa-compass', value: 'explore' }
-  ]
+  // const chatModeOptions = [
+  //   { label: 'Query', icon: 'fa-search', value: 'query' },
+  //   { label: 'Analyze', icon: 'fa-chart-line', value: 'analyze' },
+  //   { label: 'Explore', icon: 'fa-compass', value: 'explore' }
+  // ]
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -24,9 +24,9 @@ const ChatArea = ({ messages, addMessage, isConnected, currentTable, updateStatu
     scrollToBottom()
   }, [messages])
 
-  const handleChatModeChange = (option) => {
-    updateStatus(`Switched to ${option.label} mode`, 'info')
-  }
+  // const handleChatModeChange = (option) => {
+  //   updateStatus(`Switched to ${option.label} mode`, 'info')
+  // }
 
   const handleSendMessage = async (messageText) => {
     if (!messageText.trim()) return
@@ -230,13 +230,13 @@ const ChatArea = ({ messages, addMessage, isConnected, currentTable, updateStatu
             </>
           )}
         </div>
-        <div className="header-right">
+        {/* <div className="header-right">
           <ChatToggle 
             options={chatModeOptions}
             onToggle={handleChatModeChange}
             defaultOption={0}
           />
-        </div>
+        </div> */}
       </div>
 
       <div className="chat-container">
