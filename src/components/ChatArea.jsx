@@ -65,7 +65,7 @@ const ChatArea = ({ messages, addMessage, isConnected, currentTable, updateStatu
       const response = await axios.post(API_ENDPOINTS.QUERY, {
         question: messageText,
         table_name: currentTable
-      })
+      }, { withCredentials: true })
 
       if (response.data.success) {
         const assistantMessage = {

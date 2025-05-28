@@ -49,7 +49,9 @@ const Sidebar = ({
 
   const loadPerformanceSettings = async () => {
     try {
-      const response = await axios.get(API_ENDPOINTS.PERFORMANCE_CONFIG)
+      const response = await axios.get(API_ENDPOINTS.PERFORMANCE_CONFIG, {
+        withCredentials: true
+      })
       if (response.data) {
         setPerformanceSettings({
           useFasterModel: response.data.use_faster_model || false,
@@ -68,7 +70,9 @@ const Sidebar = ({
     updateStatus('Connecting to database...', 'info')
 
     try {
-      const response = await axios.post(API_ENDPOINTS.CONNECT, connectionForm)
+      const response = await axios.post(API_ENDPOINTS.CONNECT, connectionForm, {
+        withCredentials: true
+      })
       
       if (response.data.success) {
         setIsConnected(true)
@@ -89,7 +93,9 @@ const Sidebar = ({
 
   const handleDisconnect = async () => {
     try {
-      await axios.post(API_ENDPOINTS.DISCONNECT)
+      await axios.post(API_ENDPOINTS.DISCONNECT, {}, {
+        withCredentials: true
+      })
       setIsConnected(false)
       setConnectionInfo(null)
       setTables([])
@@ -106,7 +112,9 @@ const Sidebar = ({
     updateStatus('Loading tables...', 'info')
 
     try {
-      const response = await axios.get(API_ENDPOINTS.GET_TABLES)
+      const response = await axios.get(API_ENDPOINTS.GET_TABLES, {
+        withCredentials: true
+      })
       if (response.data && response.data.tables) {
         setTables(response.data.tables)
         updateStatus('Tables loaded successfully', 'success')
@@ -140,6 +148,8 @@ const Sidebar = ({
     try {
       const response = await axios.post(API_ENDPOINTS.PROCESS_TABLE, {
         table_name: tableName
+      }, {
+        withCredentials: true
       })
 
       if (response.data.success) {
@@ -189,7 +199,9 @@ const Sidebar = ({
         max_retries: 1
       }
 
-      const response = await axios.post(API_ENDPOINTS.PERFORMANCE_CONFIG, settings)
+      const response = await axios.post(API_ENDPOINTS.PERFORMANCE_CONFIG, settings, {
+        withCredentials: true
+      })
 
       if (response.data.success) {
         updateStatus('Performance settings saved', 'success')

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { API_ENDPOINTS } from './config/api'
+import axios from 'axios'
 import Sidebar from './components/Sidebar'
 import ChatArea from './components/ChatArea'
 import './App.css'
@@ -44,8 +45,10 @@ function App() {
 
   const checkConnectionStatus = async () => {
     try {
-      const response = await fetch(API_ENDPOINTS.CONNECTION_STATUS)
-      const data = await response.json()
+      const response = await axios.get(API_ENDPOINTS.CONNECTION_STATUS, {
+        withCredentials: true
+      })
+      const data = response.data
       
       if (data.connected) {
         setIsConnected(true)
@@ -68,16 +71,31 @@ function App() {
 
   const loadTables = async () => {
     try {
-      const response = await fetch(API_ENDPOINTS.GET_TABLES)
-      const data = await response.json()
+      console.log('App: Attempting to load tables...')
+      const response = await axios.get(API_ENDPOINTS.GET_TABLES, {
+        withCredentials: true
+      })
+      const data = response.data
       
-      if (response.ok && data.tables) {
+      console.log('App: Tables response:', response.status, data)
+      
+      if (response.status === 200 && data.tables) {
         setTables(data.tables)
+        console.log('App: Tables loaded successfully:', data.tables)
       } else {
-        console.error('Failed to load tables:', data.error)
+        console.error('App: Failed to load tables:', data.error)
+        updateStatus(data.error || 'Failed to load tables', 'error')
       }
     } catch (error) {
-      console.error('Error loading tables:', error)
+      console.error('App: Error loading tables:', error)
+      console.error('App: Error response:', error.response?.data)
+      console.error('App: Error status:', error.response?.status)
+      
+      if (error.response?.status === 401) {
+        updateStatus('Authentication required. Please check your database connection.', 'error')
+      } else {
+        updateStatus('Failed to load tables', 'error')
+      }
     }
   }
 
